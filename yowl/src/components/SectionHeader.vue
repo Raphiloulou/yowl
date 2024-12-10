@@ -57,9 +57,9 @@ export default {
 
 .logorecherche {
   margin-right: 2%;
-  height: 60%;
+  height: 65%;
   width: 7%;
-  margin-left: 1%;
+  margin-left: 1.5%;
 }
 
 .search {

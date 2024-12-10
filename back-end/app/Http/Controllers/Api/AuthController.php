@@ -30,6 +30,37 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'User registered successfully', "user" => $user], 201);
     }
+
+
+
+    public function login(Request $request)
+{
+    $credentials = $request->validate([
+        'login' => 'required|string', 
+        'password' => 'required|string',
+    ]);
+
+    $fieldType = filter_var($credentials['login'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+    if (Auth::attempt([$fieldType => $credentials['login'], 'password' => $credentials['password']])) {
+        $request->session()->regenerate();
+
+        return response()->json(['message' => 'Login successful', 'user' => Auth::user()], 200);
+    }
+
+    return response()->json(['message' => 'Invalid credentials'], 401);
+}
+
+
+public function logout(Request $request)
+{
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return response()->json(['message' => 'Logged out successfully'], 200);
+}
+
    
    
    

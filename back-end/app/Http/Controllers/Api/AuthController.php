@@ -73,18 +73,15 @@ class AuthController extends Controller
     }
 
     
-    public function logout(Request $request)
-    {
-        try {
-            Auth::logout();
+    public function logout()
+{
+    try {
+        Auth::logout(); 
 
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            return response()->json(['message' => 'Logged out successfully'], 200);
-
-        } catch (Exception $e) {
-            return response()->json(['message' => 'Error: ' . $e->getMessage()], 400);
-        }
+        return response()->json(['message' => 'Logged out successfully'], 200);
+    } catch (Exception $e) {
+        return response()->json(['message' => 'Error: ' . $e->getMessage()], 400);
     }
 }
+}
+

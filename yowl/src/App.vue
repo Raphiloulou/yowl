@@ -1,15 +1,18 @@
 <template>
 <SectionHeader />
+<SectionAccueil />
 
 </template>
 
 <script>
 import SectionHeader from './components/SectionHeader.vue'
+import SectionAccueil from'./components/SectionAccueil.vue'
 
 export default {
   name: 'App',
   components: {
     SectionHeader,
+    SectionAccueil,
   }
 }
 </script>

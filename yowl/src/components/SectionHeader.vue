@@ -12,6 +12,14 @@
       <img class="profil" src="@/assets/profil.png">
     </div>
   </div>
+
+  <div>
+    <router-link to="/login">Login</router-link>
+    <router-link to="/signup">Signup</router-link>
+    <router-link to="/accueil">Accueil</router-link>
+  </div>
+
+
 </template>
 
 <script>
@@ -21,6 +29,7 @@ export default {
     msg: String
   }
 }
+
 </script>
 
 <style scoped>

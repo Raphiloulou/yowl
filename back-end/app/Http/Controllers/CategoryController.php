@@ -32,12 +32,11 @@ class CategoryController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string|max:1000',
         ]);
 
         $category = Category::findOrFail($id);
 
-        $category->update($validatedData);
+       $category->update($validatedData);
 
         return response()->json([
             'message' => 'Catégorie mise à jour avec succès.',
@@ -48,7 +47,6 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
-
 
         $category->delete();
 

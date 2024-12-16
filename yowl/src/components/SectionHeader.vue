@@ -9,8 +9,8 @@
         class="search" />
     </div>
     <div>
-      <img v-if="!isLoggedIn" class="profil" src="@/assets/profil.png">
-      <button v-if="isLoggedIn" class="logout" @click="handleLogout">Log out</button>
+      <img class="profil" src="@/assets/profil.png">
+      <p v-if="isLoggedIn" class="logout" @click="handleLogout">Log out</p>
     </div>
   </div>
 
@@ -99,12 +99,19 @@ export default {
 }
 
 .profil {
+  display: flex;
   width: 60px;
   height: 50px;
+  margin-left: 95%;
+  margin-top: -3.5%;
 }
 
 .logout {
+  display: flex;
   color: black;
+  margin-top: -2.3%;
+  margin-left: 89%;
+  font-size: 120%;
   
 }
 

@@ -18,6 +18,7 @@
     <router-link to="/login" v-if="!isLoggedIn">Login</router-link>
     <router-link to="/signup" v-if="!isLoggedIn">Signup</router-link>
     <router-link to="/accueil">Accueil</router-link>
+    
   </div>
 </template>
 

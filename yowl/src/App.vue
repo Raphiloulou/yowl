@@ -3,6 +3,7 @@
 <SectionAccueil />
 <SectionLogin />
 <SectionSignup />
+<SectionCategorie />
 
 </template>
 
@@ -11,6 +12,7 @@ import SectionHeader from './components/SectionHeader.vue'
 import SectionAccueil from'./components/SectionAccueil.vue'
 import SectionLogin from'./components/SectionLogin.vue'
 import SectionSignup from'./components/SectionSignup.vue'
+import SectionCategorie from'./components/SectionCategorie.vue'
 
 export default {
   name: 'App',
@@ -19,6 +21,7 @@ export default {
     SectionAccueil,
     SectionLogin,
     SectionSignup,
+    SectionCategorie,
   }
 }
 </script>

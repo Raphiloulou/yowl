@@ -28,6 +28,12 @@ public function store(Request $request)
         'content' => 'required|string',
         'category_id' => 'required|exists:categories,id',
     ]);
+    try {
+        Post::create($validated);
+        return response()->json(['message' => 'Post created successfully!'], 201);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
 
     Post::create($validated);
 

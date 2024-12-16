@@ -1,8 +1,9 @@
+
 import { createRouter, createWebHistory } from 'vue-router';
 import SectionLogin from '@/components/SectionLogin.vue';
 import SectionSignup from '@/components/SectionSignup.vue';
 import SectionAccueil from '@/components/SectionAccueil.vue';
-import SectionCategorie from'./components/SectionCategorie.vue'
+import SectionCategorie from '@/components/SectionCategorie.vue';
 
 const routes = [
   { path: '/login', component: SectionLogin },

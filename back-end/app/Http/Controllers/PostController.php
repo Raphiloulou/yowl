@@ -39,4 +39,25 @@ public function store(Request $request)
 
     return redirect()->route('posts.index')->with('success', 'Post créé avec succès!');
 }
+public function update(Request $request, $id)
+{
+    $validated = $request->validate([
+        'title' => 'sometimes|required|string|max:255',
+        'content' => 'sometimes|required|string'
+    ]);
+
+    //$posts = Post::findOrFail($id);
+
+   
+    try { $posts->update($validated);
+
+    return response()->json([
+        'message' => 'Post mise à jour avec succès.',
+        'posts' => $posts,
+    ]);
+    }     catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
 }
+}
+

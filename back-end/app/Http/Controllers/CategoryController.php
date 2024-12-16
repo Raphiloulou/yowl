@@ -32,6 +32,7 @@ class CategoryController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'sometimes|required|string|max:255',
+            'description' => 'sometimes|required|string|max:1000'
         ]);
 
         $category = Category::findOrFail($id);

@@ -1,35 +1,49 @@
 <template>
   <div class="header">
-      <img class="logo" src="@/assets/logo.png">
+    <img class="logo" src="@/assets/logo.png">
     <div class="search-bar">
       <img class="logorecherche" src="@/assets/logorecherche.png">
       <input
         type="text"
         placeholder="Recherche..."
-        class="search"/>
+        class="search" />
     </div>
-    <div>
-      <img class="profil" src="@/assets/profil.png">
+    <div class="user-actions">
+      <img class="profil" src="@/assets/profil.png" v-if="!isLoggedIn" />
+      <button class="logout" v-if="isLoggedIn" @click="handleLogout">Log out</button>
     </div>
   </div>
 
   <div>
-    <router-link to="/login">Login</router-link>
-    <router-link to="/signup">Signup</router-link>
+    <router-link to="/login" v-if="!isLoggedIn">Login</router-link>
+    <router-link to="/signup" v-if="!isLoggedIn">Signup</router-link>
     <router-link to="/accueil">Accueil</router-link>
   </div>
-
-
 </template>
 
 <script>
 export default {
   name: 'SectionHeader',
-  props: {
-    msg: String
-  }
-}
+  data() {
+    return {
+      isLoggedIn: false, 
+    };
+  },
+  mounted() {
+    const user = localStorage.getItem('user');
+    if (user) {
+      this.isLoggedIn = true;
+    }
+  },
+  methods: {
+    handleLogout() {
+      localStorage.removeItem('user');
 
+      window.location.hash = '#login';
+      window.location.reload();
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -38,7 +52,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 11%; 
+  height: 11%;
   background-color: #f9a8d3;
   z-index: 1000;
   padding: 0;
@@ -58,7 +72,7 @@ export default {
   align-items: center;
   background-color: black;
   border-radius: 30px;
-  width: 45%; 
+  width: 45%;
   height: 60%;
   margin-left: 27%;
   margin-top: -4%;
@@ -76,7 +90,7 @@ export default {
   border: none;
   outline: none;
   color: pink;
-  font-size: 20px; 
+  font-size: 20px;
   width: 100%;
 }
 
@@ -84,11 +98,23 @@ export default {
   color: pink;
 }
 
-.profil{
+.user-actions {
   display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 1%;
+}
+
+.profil {
   width: 60px;
   height: 50px;
-  margin-top: -3.5%;
-  margin-left: 95%;
 }
+
+.logout {
+  color: black;
+  padding: 5px 10px;
+
+}
+
+
 </style>

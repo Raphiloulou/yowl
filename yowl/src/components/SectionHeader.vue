@@ -8,9 +8,9 @@
         placeholder="Recherche..."
         class="search" />
     </div>
-    <div class="user-actions">
-      <img class="profil" src="@/assets/profil.png" v-if="!isLoggedIn" />
-      <button class="logout" v-if="isLoggedIn" @click="handleLogout">Log out</button>
+    <div>
+      <img v-if="!isLoggedIn" class="profil" src="@/assets/profil.png">
+      <button v-if="isLoggedIn" class="logout" @click="handleLogout">Log out</button>
     </div>
   </div>
 
@@ -98,13 +98,6 @@ export default {
   color: pink;
 }
 
-.user-actions {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-  margin-right: 1%;
-}
-
 .profil {
   width: 60px;
   height: 50px;
@@ -112,8 +105,7 @@ export default {
 
 .logout {
   color: black;
-  padding: 5px 10px;
-
+  
 }
 
 

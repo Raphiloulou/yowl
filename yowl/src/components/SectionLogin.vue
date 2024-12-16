@@ -28,36 +28,45 @@ export default {
     };
   },
   methods: {
-  async handleLogin() {
-    try {
-      const response = await fetch('http://127.0.0.1:8000/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          login: this.identifier, 
-          password: this.password,
-        }),
-      });
+    async handleLogin() {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            login: this.identifier,
+            password: this.password,
+          }),
+        });
 
-      if (!response.ok) {
-        alert('Identifiants incorrects ou problème serveur.');
-        return;
+        if (!response.ok) {
+          const error = await response.json();
+          console.error('Erreur:', error);
+          alert(error.message || 'Une erreur est survenue.');
+          return;
+        }
+
+        const data = await response.json();
+        console.log('Connexion réussie:', data);
+
+        localStorage.setItem('user', JSON.stringify(data.user));
+        alert('Connexion réussie !');
+
+        window.location.hash = '#accueil';
+        window.location.reload();
+      } catch (error) {
+        console.error('Erreur réseau:', error);
+        alert('Une erreur réseau est survenue.');
       }
-
-      const data = await response.json();
-
-      localStorage.setItem('user', JSON.stringify(data.user));
-
-      window.location.hash = '#accueil';
-    } catch (error) {
-      alert('Une erreur est survenue. Veuillez réessayer.');
-      console.error(error); 
-    }
+    },
+    showSignupPopup() {
+      this.showPopup = false;
+      window.location.hash = '#signup';
+      window.location.reload();
+    },
   },
-}
-
 };
 </script>
 

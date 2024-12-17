@@ -46,7 +46,7 @@ public function update(Request $request, $id)
         'content' => 'sometimes|required|string'
     ]);
 
-    //$posts = Post::findOrFail($id);
+    // $posts = Post::findOrFail($id);
 
    
     try { $posts->update($validated);

@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\CategoryController;
@@ -15,9 +14,13 @@ Route::put('/categories/{id}', [CategoryController::class, 'update']);
 Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 
 Route::get('/posts', [PostController::class, 'index']);
-Route::post('/posts', [PostController::class, 'store']);
-Route::put('/posts', [PostController::class, 'update']);
-Route::delete('/posts', [PostController::class, 'destroy']);
+Route::post('/posts', [PostController::class, 'store']); 
+Route::put('/posts/{id}', [PostController::class, 'update']); 
+Route::delete('/posts/{id}', [PostController::class, 'destroy']);
+
+Route::post('/posts/{postId}/comments', [CommentController::class, 'store']);
+Route::put('/comments/{id}', [CommentController::class, 'update']);
+Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
 
 
 //Route::get('/user', function (Request $request) {

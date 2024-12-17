@@ -42,22 +42,38 @@ public function store(Request $request)
 public function update(Request $request, $id)
 {
     $validated = $request->validate([
-        'title' => 'sometimes|required|string|max:255',
-        'content' => 'sometimes|required|string'
+        'title'   => 'required|string|max:255',
+        'content' => 'required|string',
     ]);
 
-    //$posts = Post::findOrFail($id);
+    $post = Post::findOrFail($id);
 
-   
-    try { $posts->update($validated);
+  
+    if (Auth::id() !== $post->users_id) {
+        return response()->json([
+            'message' => 'Vous n\'êtes pas autorisé à modifier ce post.'
+        ], 403);
+    }
+
+    $post->update([
+        'title'   => $validated['title'],
+        'content' => $validated['content'],
+    ]);
 
     return response()->json([
-        'message' => 'Post mise à jour avec succès.',
-        'posts' => $posts,
+        'message' => 'Post mis à jour avec succès !',
+        'post'    => $post
+    ], 200);
+}
+public function destroy($id)
+{
+    $post = Post::findOrFail($id);
+
+    $post->delete();
+
+    return response()->json([
+        'message' => 'Catégorie supprimée avec succès.',
     ]);
-    }     catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
-    }
 }
 }
 

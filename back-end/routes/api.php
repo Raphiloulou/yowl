@@ -16,6 +16,8 @@ Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 
 Route::get('/posts', [PostController::class, 'index']);
 Route::post('/posts', [PostController::class, 'store']);
+Route::put('/posts', [PostController::class, 'update']);
+Route::delete('/posts', [PostController::class, 'destroy']);
 
 
 //Route::get('/user', function (Request $request) {

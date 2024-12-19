@@ -5,6 +5,7 @@
 <SectionSignup />
 <SectionCategorie />
 <SectionAdmin />
+<SectionPosts />
 
 </template>
 
@@ -15,6 +16,7 @@ import SectionLogin from'./components/SectionLogin.vue'
 import SectionSignup from'./components/SectionSignup.vue'
 import SectionCategorie from'./components/SectionCategorie.vue'
 import SectionAdmin from'./components/SectionAdmin.vue'
+import SectionPosts from'./components/SectionPosts.vue'
 
 export default {
   name: 'App',
@@ -25,6 +27,7 @@ export default {
     SectionSignup,
     SectionCategorie,
     SectionAdmin,
+    SectionPosts,
   }
 }
 </script>

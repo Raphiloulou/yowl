@@ -11,7 +11,6 @@
         <img class="sport" src="@/assets/sport.png">
         <img class="musique" src="@/assets/musique.png">
         <img class="politique" src="@/assets/politique.png">
-        <img class="barregris" src="@/assets/barregris.png">
     </div>
 </template>
   
@@ -89,11 +88,7 @@
     margin-top: 2.9%;
     margin-left: 2.1%;
   }
-  .barregris{
-    display: flex;
-    width: 10%;
-    margin-top: 10%;
-  }
+ 
   </style>
 
   

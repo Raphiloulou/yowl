@@ -4,16 +4,19 @@ import SectionLogin from '@/components/SectionLogin.vue';
 import SectionSignup from '@/components/SectionSignup.vue';
 import SectionAccueil from '@/components/SectionAccueil.vue';
 import SectionCategorie from '@/components/SectionCategorie.vue';
+import SectionPosts from '@/components/SectionPosts.vue';
 
 const routes = [
   { path: '/login', component: SectionLogin },
   { path: '/signup', component: SectionSignup },
   { path: '/accueil', component: SectionAccueil, meta: { requiresAuth: true } },
   { path: '/categories', component: SectionCategorie },
+  { path: '/posts', name: 'Posts', component: SectionPosts },
+  
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(process.env.BASE_URL),
   routes,
 });
 
@@ -27,3 +30,6 @@ router.beforeEach((to, from, next) => {
 });
 
 export default router;
+
+
+

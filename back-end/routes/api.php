@@ -5,7 +5,10 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Session\Middleware\StartSession;
 
+Route::middleware(StartSession::class)->group(function () {
 Route::post('/signup', [AuthController::class, 'signup'])->name('signup');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -26,9 +29,17 @@ Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('co
 
 
 
-Route::get('/check-auth', function () {
-    return response()->json(['user' => Auth::user()]);
-})->middleware('auth');
+
+
+Route::get('/test-session', function () {
+    $user = Auth::user();
+    if ($user) {
+        return response()->json(['user' => $user], 200);
+    }
+    return response()->json(['message' => 'No user logged in.'], 401);
+});
+
+});
 
 
 // Route::get('/user', function (Request $request) {

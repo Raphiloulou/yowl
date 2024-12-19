@@ -4,92 +4,69 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Comment;
-use App\Models\User;
-use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
-
 class CommentController extends Controller
 {
     public function store(Request $request, $postId)
-{
-    $user = Auth::user();
-
-    if (!$user) {
-        return response()->json(['error' => 'Unauthorized. Please login first.'], 401);
-    }
-
-    $validated = $request->validate([
-        'content' => 'required|string',
-    ]);
-
-    try {
-        $comment = Comment::create([
-            'content' => $validated['content'],
-            'post_id' => $postId,
-            'user_id' => $user->id,
+    {
+       
+        $validated = $request->validate([
+            'content' => 'required|string',
+            'user_id' => 'required|exists:users,id', 
         ]);
 
-        return response()->json([
-            'message' => 'Comment created successfully!',
-            'comment' => $comment,
-        ], 201);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
-    }
-}
+        try {
+            $comment = Comment::create([
+                'content' => $validated['content'],
+                'post_id' => $postId,
+                'users_id' => $validated['user_id'], 
+            ]);
 
-public function update(Request $request, $id)
-{
-    $user = Auth::user();
-
-    if (!$user) {
-        return response()->json(['error' => 'Unauthorized. Please login first.'], 401);
-    }
-
-    $comment = Comment::findOrFail($id);
-
-    if ($comment->users_id !== $user->id) {
-        return response()->json(['error' => 'You are not authorized to update this comment.'], 403);
+            return response()->json([
+                'message' => 'Comment created successfully!',
+                'comment' => $comment,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
-    $validated = $request->validate([
-        'content' => 'required|string',
-    ]);
-
-    try {
-        $comment->update([
-            'content' => $validated['content'],
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'content' => 'required|string',
         ]);
 
-        return response()->json([
-            'message' => 'Comment updated successfully!',
-            'comment' => $comment,
-        ], 200);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
-    }
-}
+        $comment = Comment::findOrFail($id);
 
-public function destroy($id)
-{
-    $user = Auth::user();
+        if ($comment->users_id !== $request->user_id) {
+            return response()->json(['error' => 'You are not authorized to update this comment.'], 403);
+        }
 
-    if (!$user) {
-        return response()->json(['error' => 'Unauthorized. Please login first.'], 401);
-    }
-
-    $comment = Comment::findOrFail($id);
-
-    if ($comment->users_id !== $user->id) {
-        return response()->json(['error' => 'You are not authorized to delete this comment.'], 403);
+        try {
+            $comment->update(['content' => $validated['content']]);
+            return response()->json([
+                'message' => 'Comment updated successfully!',
+                'comment' => $comment,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
-    try {
-        $comment->delete();
+    public function destroy($id)
+    {
+        $comment = Comment::findOrFail($id);
 
-        return response()->json(['message' => 'Comment deleted successfully!'], 200);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
+        if ($comment->users_id !== Auth::id()) {
+            return response()->json(['error' => 'You are not authorized to delete this comment.'], 403);
+        }
+
+        try {
+            $comment->delete();
+            return response()->json(['message' => 'Comment deleted successfully!'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
-}
 }

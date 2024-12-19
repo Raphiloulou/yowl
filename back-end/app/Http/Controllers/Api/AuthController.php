@@ -39,33 +39,34 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
-    {
-        try {
-            $credentials = $request->validate([
-                'login' => 'required|string',
-                'password' => 'required|string',
-            ]);
+{
+    try {
+        $credentials = $request->validate([
+            'login' => 'required|string',
+            'password' => 'required|string',
+        ]);
 
-            $fieldType = filter_var($credentials['login'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $fieldType = filter_var($credentials['login'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-            if (Auth::attempt([$fieldType => $credentials['login'], 'password' => $credentials['password']])) {
-                $user = Auth::user();
-                return response()->json([
-                    'message' => 'Login successful',
-                    'user' => $user,
-                ], 200);
-            }
-
-            throw new Exception('Invalid credentials.');
-        } catch (ValidationException $e) {
+        if (Auth::attempt([$fieldType => $credentials['login'], 'password' => $credentials['password']])) {
+            $user = Auth::user();
             return response()->json([
-                'message' => 'Validation error.',
-                'errors' => $e->errors(),
-            ], 422);
-        } catch (Exception $e) {
-            return response()->json(['message' => 'Error: ' . $e->getMessage()], 400);
+                'message' => 'Login successful',
+                'user' => $user,
+            ], 200);
         }
+
+        throw new Exception('Invalid credentials.');
+    } catch (ValidationException $e) {
+        return response()->json([
+            'message' => 'Validation error.',
+            'errors' => $e->errors(),
+        ], 422);
+    } catch (Exception $e) {
+        return response()->json(['message' => 'Error: ' . $e->getMessage()], 400);
     }
+}
+
 
     public function logout(Request $request)
     {

@@ -10,7 +10,7 @@
         </form>
       </div>
   
-      <!-- Liste des posts -->
+    
       <div class="posts-list">
         <div v-for="post in posts" :key="post.id" class="post-card">
           <div class="post-header">
@@ -43,10 +43,12 @@
       return {
         posts: [],
         newPost: {
-          title: '',
-          content: '',
-        },
-        defaultProfilePic: 'https://via.placeholder.com/50', // Image par défaut
+        title: '',
+        content: '',
+        category_id: 1, 
+        user_id: null,
+},
+
       };
     },
     methods: {
@@ -65,25 +67,29 @@
         }
       },
       async createPost() {
-        try {
-          const response = await fetch('http://127.0.0.1:8000/api/posts', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${this.getToken()}`,
-            },
-            body: JSON.stringify(this.newPost),
-          });
-          if (!response.ok) throw new Error('Erreur lors de la création du post');
-          const post = await response.json();
-          this.posts.unshift(post);
-          this.newPost.title = '';
-          this.newPost.content = '';
-        } catch (error) {
-          console.error(error);
-          alert('Impossible de créer le post.');
-        }
+  try {
+    
+
+    this.newPost.category_id = 1; 
+    const response = await fetch('http://127.0.0.1:8000/api/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.getToken()}`,
       },
+      body: JSON.stringify(this.newPost),
+    });
+    if (!response.ok) throw new Error('Erreur lors de la création du post');
+    const post = await response.json();
+    this.posts.unshift(post);
+    this.newPost.title = '';
+    this.newPost.content = '';
+  } catch (error) {
+    console.error(error);
+    alert('Impossible de créer le post.');
+  }
+},
+
       likePost(postId) {
         console.log(`Liked post ${postId}`);
       },
@@ -121,18 +127,36 @@
   }
   
   .post-title {
-    margin-bottom: 10px;
+    display: flex;
+    width: 12%;
+    height: 25px;
+    text-align: center;
+    border-radius: 5px;
+    margin-top: -4.7%;
+    margin-left: -0.5%;
+
   }
   
   .post-content {
-    margin-bottom: 10px;
-  }
+  display: flex;
+  width: 100%;
+  height: 25px; 
+  resize: none; 
+  margin-left: 15%;
+  margin-top: -3.9%;
+  border-radius: 5px;
+  text-align: left;
+}
+
   
   .post-submit {
-    align-self: flex-end;
     display: flex;
-    margin-top: -12.3%;
-    margin-left: auto;
+    margin-top: -3.8%;
+    margin-left: 118%;
+    width: 13%;
+    height: 31px;
+    border-radius: 5px;
+    text-align: center;
   }
   
   .posts-list {
@@ -203,9 +227,11 @@
 
   .barregris{
     display: flex;
-    width: 130%;
+    width: 137%;
     margin-top: -55%;
+    margin-left: -2.5%;
     border-radius: 10px;
+    height: 45px;
   }
   </style>
   

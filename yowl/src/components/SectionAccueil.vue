@@ -1,15 +1,9 @@
 <template>
     <div>
         <img class="fondgris" src="@/assets/fondgris.png">
-        <img class="fondblanc1" src="@/assets/fondblanc.png">
-        <img class="fondblanc2" src="@/assets/fondblanc.png">
-        <img class="fondblanc3" src="@/assets/fondblanc.png">
-        <img class="fondblanc4" src="@/assets/fondblanc.png">
-        <img class="fondblanc5" src="@/assets/fondblanc.png">
         <img class="film" src="@/assets/film.png">
         <img class="art" src="@/assets/art.png">
         <img class="sport" src="@/assets/sport.png">
-        <img class="musique" src="@/assets/musique.png">
         <img class="politique" src="@/assets/politique.png">
     </div>
 </template>
@@ -24,70 +18,50 @@
   </script>
   
   <style scoped>
-  .fondgris{
-    display: flex;
-    margin-left: -1%;
-    width: 18%;
-    height: 500px;
-  }
 
-  .fondblanc1{
-    display: flex;
-    width: 13%;
-    margin-top: -27%;
-    margin-left: 1.5%;
-  }
-  .fondblanc2{
-    display: flex;
-    width: 13%;
-    margin-left: 1.5%;
-  }
-  .fondblanc3{
-    display: flex;
-    width: 13%;
-    margin-left: 1.5%;
-  }
-  .fondblanc4{
-    display: flex;
-    width: 13%;
-    margin-left: 1.5%;
-  }
-  .fondblanc5{
-    display: flex;
-    width: 13%;
-    margin-left: 1.5%;
-  }
+
   
-  .film{
-    display: flex;
-    width: 2.5%;
-    margin-top: -22.2%;
-    margin-left: 2%;
-  }
-  .art{
-    display: flex;
-    width: 2.3%;
-    margin-top: 2.9%;
-    margin-left: 2.2%;
-  }
-  .sport{
-    display: flex;
-    width: 1.8%;
-    margin-top: 2.9%;
-    margin-left: 2.3%;
-  }
-  .musique{
-    display: flex;
-    width: 1.7%;
-    margin-top: 3.1%;
-    margin-left: 2.3%;
-  }
-  .politique{
-    display: flex;
-    width: 2%;
-    margin-top: 2.9%;
-    margin-left: 2.1%;
-  }
+  .fondgris {
+  display: flex;
+  margin-left: -1%;
+  width: 18%;
+  height: 500px;
+  position: relative;
+}
+
+.film {
+  position: absolute;
+  width: 2.5%;
+  left: 2.5%; 
+  top: 29.3%; 
+  z-index: 11;
+}
+
+.art {
+  position: absolute;
+  width: 2.3%;
+  left: 2.8%; 
+  top: 44.3%; 
+  z-index: 11;
+}
+
+.sport {
+  position: absolute;
+  width: 1.8%;
+  left: 3%; 
+  top: 52.2%; 
+  z-index: 11;
+}
+
+
+.politique {
+  position: absolute;
+  width: 2%;
+  left: 2.7%; 
+  top: 36.8%; 
+  z-index: 11;
+}
+
  
   </style>
 

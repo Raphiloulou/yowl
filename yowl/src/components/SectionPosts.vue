@@ -1,114 +1,100 @@
 <template>
-    <div class="section-posts">
-        <img class="barregris" src="@/assets/barregris.png">
+  <div class="section-posts">
+    <img class="barregris" src="@/assets/barregris.png">
 
-      <div class="create-post-container">
-        <form @submit.prevent="createPost" class="create-post-form">
-          <input class="post-title" type="text" v-model="newPost.title" placeholder="Titre du post" />
-          <textarea class="post-content" v-model="newPost.content" placeholder="Que voulez-vous partager ?"></textarea>
-          <button class="post-submit" type="submit">Créer un post</button>
-        </form>
-      </div>
-  
-    
-      <div class="posts-list">
-        <div v-for="post in posts" :key="post.id" class="post-card">
-          <div class="post-header">
-            <img class="post-profile-pic" :src="post.user.profile_picture || defaultProfilePic" alt="Photo de profil" />
-            <div class="post-user-info">
-              <p class="post-user-name">{{ post.user.name }}</p>
-              <p class="post-timestamp">{{ formatDate(post.created_at) }}</p>
-            </div>
+    <div class="create-post-container">
+      <form @submit.prevent="createPost" class="create-post-form">
+        <input class="post-title" type="text" v-model="newPost.title" placeholder="Titre du post" />
+        <textarea class="post-content" v-model="newPost.content" placeholder="Que voulez-vous partager ?"></textarea>
+        <button class="post-submit" type="submit">Créer un post</button>
+      </form>
+    </div>
+
+    <div class="posts-list">
+      <div v-for="post in posts" :key="post.id" class="post-card">
+        <div class="post-header">
+          <div class="post-user-info">
+            <p class="post-user-name">{{ post.user?.name || 'Utilisateur inconnu' }}</p>
+            <p class="post-timestamp">{{ formatDate(post.created_at) }}</p>
           </div>
-  
-          <div class="post-body">
-            <p class="post-text">{{ post.content }}</p>
-            <img v-if="post.image" :src="post.image" alt="Image du post" class="post-image" />
-          </div>
-  
-          <div class="post-footer">
-            <button class="post-like" @click="likePost(post.id)">👍 {{ post.likes }}</button>
-            <button class="post-dislike" @click="dislikePost(post.id)">👎 {{ post.dislikes }}</button>
-            <button class="post-comment">💬 Commenter</button>
-          </div>
+        </div>
+
+        <div class="post-body">
+          <h3>{{ post.title }}</h3>
+          <p class="post-text">{{ post.content }}</p>
         </div>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: 'SectionPosts',
-    data() {
-      return {
-        posts: [],
-        newPost: {
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'SectionPosts',
+  data() {
+    return {
+      posts: [],
+      newPost: {
         title: '',
         content: '',
-        category_id: 1, 
+        category_id: 1,
         user_id: null,
-},
-
-      };
+      },
+    };
+  },
+  methods: {
+    async fetchPosts() {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/posts');
+        if (!response.ok) throw new Error('Erreur lors de la récupération des posts');
+        this.posts = await response.json();
+      } catch (error) {
+        console.error(error);
+        alert('Impossible de charger les posts.');
+      }
     },
-    methods: {
-      async fetchPosts() {
-        try {
-          const response = await fetch('http://127.0.0.1:8000/api/posts', {
-            headers: {
-              Authorization: `Bearer ${this.getToken()}`,
-            },
-          });
-          if (!response.ok) throw new Error('Erreur lors de la récupération des posts');
-          this.posts = await response.json();
-        } catch (error) {
-          console.error(error);
-          alert('Impossible de charger les posts.');
-        }
-      },
-      async createPost() {
-  try {
-    
-
-    this.newPost.category_id = 1; 
-    const response = await fetch('http://127.0.0.1:8000/api/posts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.getToken()}`,
-      },
-      body: JSON.stringify(this.newPost),
-    });
-    if (!response.ok) throw new Error('Erreur lors de la création du post');
-    const post = await response.json();
-    this.posts.unshift(post);
-    this.newPost.title = '';
-    this.newPost.content = '';
-  } catch (error) {
-    console.error(error);
-    alert('Impossible de créer le post.');
-  }
-},
-
-      likePost(postId) {
-        console.log(`Liked post ${postId}`);
-      },
-      dislikePost(postId) {
-        console.log(`Disliked post ${postId}`);
-      },
-      formatDate(date) {
-        return new Date(date).toLocaleTimeString();
-      },
-      getToken() {
+    async createPost() {
+      try {
         const user = JSON.parse(localStorage.getItem('user'));
-        return user ? user.token : null;
-      },
+        if (!user || !user.id) {
+          alert('Vous devez être connecté pour créer un post.');
+          return;
+        }
+
+        this.newPost.user_id = user.id;
+
+        const response = await fetch('http://127.0.0.1:8000/api/posts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(this.newPost),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Erreur lors de la création du post');
+        }
+
+        const post = await response.json();
+        this.posts.unshift(post.post);
+        this.newPost.title = '';
+        this.newPost.content = '';
+        alert('Post créé avec succès !');
+      } catch (error) {
+        console.error(error);
+        alert('Impossible de créer le post. Vérifiez vos données.');
+      }
     },
-    mounted() {
-      if (this.getToken()) this.fetchPosts();
+    formatDate(date) {
+      return new Date(date).toLocaleDateString();
     },
-  };
-  </script>
+  },
+  mounted() {
+    this.fetchPosts();
+  },
+};
+</script>
   
   <style scoped>
   .section-posts {

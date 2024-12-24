@@ -1,7 +1,12 @@
 <template>
   <div>
     <h2>Liste des catégories</h2>
-   
+    <!-- <h2>Liste des catégories</h2>
+    <ul>
+      <li v-if="categories[0]">{{ categories[0].name }}</li>
+      <li v-if="categories[1]">{{ categories[1].name }}</li>
+      <li v-if="categories[2]">{{ categories[2].name }}</li>
+    </ul> -->
   </div>
 </template>
 
@@ -28,3 +33,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+</style>

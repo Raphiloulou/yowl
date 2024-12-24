@@ -19,6 +19,7 @@ class PostController extends Controller
         ]);
     
             $validated['user_id'] = Auth::id();  
+            dd($validated);
             $post = Post::create($validated);
     
             return response()->json([

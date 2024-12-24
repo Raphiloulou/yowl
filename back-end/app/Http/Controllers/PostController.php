@@ -17,7 +17,7 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        if (Auth::loginUsingId($request["user_id"]) === false) {
+        if (!Auth::check()) {
             return response()->json(['error' => 'Utilisateur non authentifié.'], 401);
         }
 
@@ -27,20 +27,25 @@ class PostController extends Controller
             'category_id' => 'required|exists:categories,id',
         ]);
 
-        $validated['user_id'] = $request["user_id"];
+        $validated['user_id'] = Auth::id();
 
         $post = Post::create($validated);
         $post->load(['user', 'category']);
 
-        $post = new PostResource($post);
-        return response()->json(["data" => $post]);
+        return response()->json([
+            'message' => 'Post créé avec succès',
+            'post' => new PostResource($post),
+        ]);
     }
-
 
     public function update(Request $request, Post $post)
     {
         if (!Auth::check()) {
             return response()->json(['error' => 'Utilisateur non authentifié.'], 401);
+        }
+
+        if (Auth::id() !== $post->user_id) {
+            return response()->json(['error' => 'Non autorisé.'], 403);
         }
 
         $validated = $request->validate([
@@ -52,30 +57,30 @@ class PostController extends Controller
         $post->update($validated);
         $post->load(['user', 'category']);
 
-        return new PostResource($post);
-    }
-
-    public function testSession()
-    {
         return response()->json([
-            'authenticated' => Auth::check(),
-            'user' => Auth::user(),
+            'message' => 'Post mis à jour avec succès',
+            'post' => new PostResource($post),
         ]);
     }
-    public function destroy(Post $post, Request $request)
-{
-    if (Auth::loginUsingId($request["user_id"]) === false) {
-        return response()->json(['error' => 'Utilisateur non authentifié.'], 401);
+
+    public function destroy(Post $post)
+    {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Utilisateur non authentifié.'], 401);
+        }
+    
+        $userId = Auth::id();
+        if ($userId !== $post->user_id) {
+            return response()->json(['error' => 'Non autorisé.'], 403);
+        }
+    
+        $post->delete();
+    
+        return response()->json(['message' => 'Post supprimé avec succès'], 200);
     }
+    
 
-    if ($post->user_id !== $request["user_id"]) {
-        return response()->json(['error' => 'Vous n\'avez pas l\'autorisation de supprimer ce post.'], 403);
-    }
 
-    $post->delete();
-
-    return response()->json(['message' => 'Post supprimé avec succès.'], 200);
-}
 
 public function likePost(Request $request, $id)
 {

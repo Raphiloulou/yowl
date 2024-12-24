@@ -363,9 +363,5 @@ button {
 button:hover {
   background-color: white;
 }
-.like-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 5px;
-}
+
 </style>

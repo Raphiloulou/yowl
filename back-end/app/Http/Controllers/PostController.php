@@ -55,17 +55,6 @@ class PostController extends Controller
         return new PostResource($post);
     }
 
-    public function destroy(Post $post)
-    {
-        if (!Auth::check()) {
-            return response()->json(['error' => 'Utilisateur non authentifié.'], 401);
-        }
-
-        $post->delete();
-
-        return response()->json(['message' => 'Post supprimé avec succès.'], 200);
-    }
-
     public function testSession()
     {
         return response()->json([
@@ -73,22 +62,37 @@ class PostController extends Controller
             'user' => Auth::user(),
         ]);
     }
-    public function likePost($id)
-    {
-
-    $post = Post::find($id);
-
-    if (!$post) {
-        return response()->json(['message' => 'Post not found'], 404);
+    public function destroy(Post $post, Request $request)
+{
+    if (Auth::loginUsingId($request["user_id"]) === false) {
+        return response()->json(['error' => 'Utilisateur non authentifié.'], 401);
     }
 
-    $post->likes += 1;
-    $post->save();
-
-    return response()->json([
-        'message' => 'Post liked successfully',
-        'post' => $post
-    ]);
+    if ($post->user_id !== $request["user_id"]) {
+        return response()->json(['error' => 'Vous n\'avez pas l\'autorisation de supprimer ce post.'], 403);
     }
+
+    $post->delete();
+
+    return response()->json(['message' => 'Post supprimé avec succès.'], 200);
+}
+
+public function likePost(Request $request, $id)
+{
+    if (Auth::loginUsingId($request["user_id"]) === false) {
+        return response()->json(['error' => 'Utilisateur non authentifié.'], 401);
+    }
+
+    $post = Post::findOrFail($id);
+    $userId = $request["user_id"];
+
+    if ($post->likes()->where('user_id', $userId)->exists()) {
+        return response()->json(['error' => 'Vous avez déjà liké ce post.'], 403);
+    }
+
+    $post->likes()->create(['user_id' => $userId]);
+
+    return response()->json(['message' => 'Post liké avec succès.', 'post' => $post]);
+}
 
 }

@@ -8,6 +8,16 @@ use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 class CommentController extends Controller
 {
+    public function index($postId)
+{
+    $comments = Comment::with('user')
+        ->where('post_id', $postId)
+        ->latest()
+        ->get();
+
+    return response()->json($comments);
+}
+
     public function store(Request $request, $userId)
     {
         $validated = $request->validate([

@@ -1,6 +1,6 @@
 <template>
   <div class="section-posts">
-    <img class="barregris" src="@/assets/barregris.png">
+    <img class="barregris" src="@/assets/barregris.png" />
 
     <div class="create-post-container">
       <form @submit.prevent="createPost" class="create-post-form">
@@ -24,17 +24,23 @@
         v-for="post in posts"
         :key="post.id"
         class="post-card"
-        @click="openPost(post)" 
+        @click="openPost(post)"
       >
         <div class="post-header">
           <div class="post-user-info">
             <p class="post-user-name">
-              {{ post.user?.name || 'Utilisateur inconnu' }}
+              {{ post.user?.name || "Utilisateur inconnu" }}
             </p>
             <p class="post-timestamp">
-              {{ post.created_at ? formatDate(post.created_at) : 'Date inconnue' }}
+              {{ post.created_at ? formatDate(post.created_at) : "Date inconnue" }}
             </p>
-            <img class="corbeille" src="@/assets/benne.png" @click.stop="deletePost(post.id)">
+            <!-- Bouton de suppression visible uniquement si l'utilisateur peut supprimer le post -->
+            <img
+              v-if="canDeletePost(post)"
+              class="corbeille"
+              src="@/assets/benne.png"
+              @click.stop="deletePost(post.id)"
+            />
           </div>
         </div>
 
@@ -96,7 +102,7 @@ export default {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json",
+            Accept: "application/json",
           },
           body: JSON.stringify({
             ...this.newPost,
@@ -120,6 +126,35 @@ export default {
       }
     },
 
+    canDeletePost(post) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    return user && post.user && user.id === post.user.id;
+  },
+  
+  async deletePost(postId) {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/posts/${postId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Erreur lors de la suppression du post.");
+      }
+
+      this.posts = this.posts.filter((post) => post.id !== postId);
+      alert("Post supprimé avec succès !");
+    } catch (error) {
+      console.error(error);
+      alert("Impossible de supprimer le post.");
+    }
+  },
+
+
     formatDate(date) {
       return new Date(date).toLocaleString();
     },
@@ -131,30 +166,12 @@ export default {
     closePost() {
       this.selectedPost = null;
     },
-
-    async deletePost(postId) {
-      try {
-        const response = await fetch(`http://127.0.0.1:8000/api/posts/${postId}`, {
-          method: "DELETE",
-        });
-
-        if (!response.ok) {
-          throw new Error("Erreur lors de la suppression du post.");
-        }
-
-        this.posts = this.posts.filter(post => post.id !== postId);
-      } catch (error) {
-        console.error(error);
-        alert("Impossible de supprimer le post.");
-      }
-    },
   },
   mounted() {
     this.fetchPosts();
   },
 };
 </script>
-
 <style scoped>
 .section-posts {
   width: 100%;
@@ -346,5 +363,10 @@ button {
 
 button:hover {
   background-color: white;
+}
+.like-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
 }
 </style>

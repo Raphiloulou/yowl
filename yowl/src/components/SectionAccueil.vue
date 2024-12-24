@@ -61,7 +61,49 @@
   top: 36.8%; 
   z-index: 11;
 }
+@media screen and (max-width: 1200px){
+  .fondgris {
+  display: flex;
+  margin-left: -2%;
+  width: 19%;
+  height: 300px;
+  position: relative;
+}
 
+.film {
+  position: absolute;
+  width: -11%;
+  left: 2.5%; 
+  top: 0%; 
+  z-index: 0;
+}
+
+.art {
+  position: absolute;
+  width: 2.3%;
+  left: 2.8%; 
+  top: 0%; 
+  z-index: 0;
+}
+
+.sport {
+  position: absolute;
+  width: 1.8%;
+  left: 3%; 
+  top: 0%; 
+  z-index: 0;
+}
+
+
+.politique {
+  position: absolute;
+  width: 2%;
+  left: 2.7%; 
+  top: 0%; 
+  z-index: 0;
+}
+
+}
  
   </style>
 

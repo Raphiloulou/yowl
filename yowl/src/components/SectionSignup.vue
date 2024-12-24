@@ -116,4 +116,55 @@ export default {
   margin-top: 7%;
   margin-left: 37%;
 }
+
+@media screen and (max-width: 1200px) {
+
+  .popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 75%;
+  max-width: 400px;
+  text-align: center;
+  margin-top: -40%;
+}
+
+.Signup {
+  display: flex;
+  width: 40%;
+  margin-left: 30%;
+}
+
+.text,
+.email,
+.password {
+  display: flex;
+  margin-left: 23%;
+  font-size: 110%;
+  width: 54%;
+}
+
+.submit {
+  display: flex;
+  font-size: 110%;
+  margin-top: 7%;
+  margin-left: 37%;
+}
+
+}
+
 </style>

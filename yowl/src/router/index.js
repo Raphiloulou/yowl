@@ -5,6 +5,7 @@ import SectionSignup from '@/components/SectionSignup.vue';
 import SectionAccueil from '@/components/SectionAccueil.vue';
 import SectionCategorie from '@/components/SectionCategorie.vue';
 import SectionPosts from '@/components/SectionPosts.vue';
+// import PostDetails from '@/components/PostDetails.vue';
 
 const routes = [
   { path: '/login', component: SectionLogin },
@@ -12,6 +13,7 @@ const routes = [
   { path: '/accueil', component: SectionAccueil, meta: { requiresAuth: true } },
   { path: '/categories', component: SectionCategorie },
   { path: '/posts', name: 'Posts', component: SectionPosts },
+  // { path: '/posts/:id', component: PostDetails, props: true },
   
 ];
 

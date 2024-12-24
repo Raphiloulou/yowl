@@ -19,10 +19,7 @@ Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('cat
 Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
 
-Route::get('/posts', [PostController::class, 'index']);
-Route::post('/posts', [PostController::class, 'store']);
-Route::put('/posts/id}', [PostController::class, 'update']);
-Route::delete('/posts/{id}', [PostController::class, 'destroy']);
+
 
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
@@ -32,7 +29,6 @@ Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.de
 
 Route::post('/posts/{post}/like', [PostController::class, 'likePost']);
 
-Route::post('/posts/{postId}/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::post('/posts/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
 Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
@@ -44,13 +40,14 @@ Route::get('/categories/{id}/posts', [CategoryController::class, 'getPostsByCate
 
 
 
-Route::get('/test-session', function () {
-    $user = Auth::user();
-    if ($user) {
-        return response()->json(['user' => $user], 200);
-    }
-    return response()->json(['message' => 'No user logged in.'], 401);
-});
+// Route::get('/test-session', function () {
+//     $user = Auth::user();
+//     if ($user) {
+//         return response()->json(['user' => $user], 200);
+//     }
+
+//     return response()->json(['message' => 'No user logged in.'], 401);
+// });
 
 // Route::get('/test-session', function () {
 //     $user = Auth::user();

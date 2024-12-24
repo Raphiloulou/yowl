@@ -73,20 +73,6 @@ class PostController extends Controller
             'user' => Auth::user(),
         ]);
     }
-<<<<<<< HEAD
-    
-    public function destroy($id)
-    {
-        $post = Post::findOrFail($id);
-    
-        if (Auth::id() !== $post->users_id) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-    
-        $post->delete();
-    
-        return response()->json(['message' => 'Post deleted successfully!']);
-    }
     public function likePost($id)
     {
 
@@ -105,7 +91,4 @@ class PostController extends Controller
     ]);
     }
 
-}    
-=======
 }
->>>>>>> 9de989535118f3489cce39b8d1444aab8805cddc

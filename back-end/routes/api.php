@@ -37,6 +37,7 @@ Route::post('/posts/{id}/comments', [CommentController::class, 'store'])->name('
 Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
 Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
+Route::get('/categories/{id}/posts', [CategoryController::class, 'getPostsByCategory'])->name('categories.posts');
 
 
 

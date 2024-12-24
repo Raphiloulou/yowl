@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
-
+use App\Models\Post;
 class CategoryController extends Controller
 {
     public function index()
@@ -54,5 +54,16 @@ class CategoryController extends Controller
         return response()->json([
             'message' => 'Catégorie supprimée avec succès.',
         ]);
+    }
+    public function getPostsByCategory($categoryId)
+    {
+        $query = Post::with(['user', 'category']);
+
+        if ($categoryId != 3) { 
+            $query->where('category_id', $categoryId);
+        }
+
+        $posts = $query->latest()->get();
+        return response()->json($posts);
     }
 }

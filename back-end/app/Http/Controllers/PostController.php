@@ -2,54 +2,78 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Http\Resources\PostResource;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    public function index()
+    {
+        $posts = Post::with(['user', 'category'])->latest()->get();
+        return PostResource::collection($posts);
+    }
+
     public function store(Request $request)
     {
-        try {
+        if (Auth::loginUsingId($request["user_id"]) === false) {
+            return response()->json(['error' => 'Utilisateur non authentifié.'], 401);
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'user_id' => 'required|exists:users,id'
         ]);
-    
-            $validated['user_id'] = Auth::id();  
-            $post = Post::create($validated);
-    
-            return response()->json([
-                'message' => 'Post created successfully!',
-                'post' => $post,
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+
+        $validated['user_id'] = $request["user_id"];
+
+        $post = Post::create($validated);
+        $post->load(['user', 'category']);
+
+        $post = new PostResource($post);
+        return response()->json(["data" => $post]);
     }
-    
-    public function update(Request $request, $id)
+
+
+    public function update(Request $request, Post $post)
     {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Utilisateur non authentifié.'], 401);
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
         ]);
-    
-        $post = Post::findOrFail($id);
-    
-        if (Auth::id() !== $post->users_id) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-    
+
         $post->update($validated);
-    
+        $post->load(['user', 'category']);
+
+        return new PostResource($post);
+    }
+
+    public function destroy(Post $post)
+    {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Utilisateur non authentifié.'], 401);
+        }
+
+        $post->delete();
+
+        return response()->json(['message' => 'Post supprimé avec succès.'], 200);
+    }
+
+    public function testSession()
+    {
         return response()->json([
-            'message' => 'Post updated successfully!',
-            'post' => $post,
+            'authenticated' => Auth::check(),
+            'user' => Auth::user(),
         ]);
     }
+<<<<<<< HEAD
     
     public function destroy($id)
     {
@@ -82,3 +106,6 @@ class PostController extends Controller
     }
 
 }    
+=======
+}
+>>>>>>> 9de989535118f3489cce39b8d1444aab8805cddc

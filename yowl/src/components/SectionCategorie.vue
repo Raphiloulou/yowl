@@ -74,4 +74,46 @@ li.selected {
   background-color: white;
   font-weight: bold;
 }
+
+@media screen and (max-width: 1200px) {
+
+  .categories-container {
+  position: absolute;
+  left: -10.5px;
+  top: 6%;
+  width: 80px;
+  background-color: rgba(128, 128, 128, 0.151);
+  padding: 10px;
+  border-radius: 8px;
+ 
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style-type: none;
+  margin: 10%;
+  padding: 0;
+}
+
+li {
+  padding: 8px 10px;
+  font-size: 14px;
+  background-color: white;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+li:hover {
+  background-color: white;
+}
+
+li.selected {
+  background-color: white;
+  font-weight: bold;
+}
+}
 </style>

@@ -34,7 +34,6 @@
             <p class="post-timestamp">
               {{ post.created_at ? formatDate(post.created_at) : "Date inconnue" }}
             </p>
-            <!-- Bouton de suppression visible uniquement si l'utilisateur peut supprimer le post -->
             <img
               v-if="canDeletePost(post)"
               class="corbeille"

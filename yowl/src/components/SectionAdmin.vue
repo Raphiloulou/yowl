@@ -1,5 +1,5 @@
 <template>
-    <p>ljc</p>
+    <p></p>
   </template>
   
   <script>

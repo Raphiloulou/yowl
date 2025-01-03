@@ -66,7 +66,8 @@
     cursor: pointer;
   }
   
-  .recent-post {
+
+ .recent-post {
     margin-top: 20px;
   }
   
@@ -91,5 +92,6 @@
     justify-content: center;
     font-style: italic;
   }
-  </style>
-  
+
+</style>
+   
